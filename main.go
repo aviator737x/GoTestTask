@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 )
-
 
 var dict map[string][61]int
 
@@ -14,14 +14,15 @@ func toNum(s string) int {
 	res := 0
 	pow := 1
 	for i := len(s) - 1; i >= 0; i-- {
-		res += int(s[i] - '0') * pow
+		res += int(s[i]-'0') * pow
 		pow *= 10
 	}
 	return res
 }
 
-func main()  {
-	data, err := ioutil.ReadFile("/Users/user/go/src/awesomeProject/main/data.txt")
+func main() {
+	pwd, err := os.Getwd()
+	data, err := ioutil.ReadFile(pwd + "/data.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -37,7 +38,7 @@ func main()  {
 			CurrentGuard = GuardNumb
 			state = 0
 		}
-		if str[2] == "falls" && state != 1{
+		if str[2] == "falls" && state != 1 {
 			minute := toNum(str[1][3:5])
 			field := dict[CurrentGuard]
 			for i := minute; i < 60; i++ {
@@ -47,7 +48,7 @@ func main()  {
 			dict[CurrentGuard] = field
 			state = 1
 		}
-		if str[2] == "wakes" && state != 2{
+		if str[2] == "wakes" && state != 2 {
 			minute := toNum(str[1][3:5])
 			field := dict[CurrentGuard]
 			for i := minute; i < 60; i++ {
@@ -74,7 +75,7 @@ func main()  {
 			result = i
 		}
 	}
-	fmt.Println("The answer to task#1 is:", result * toNum(guard))
+	fmt.Println("The answer to task#1 is:", result*toNum(guard))
 	minute := 0
 	max = 0
 	for i := range dict {
@@ -86,7 +87,6 @@ func main()  {
 			}
 		}
 	}
-	fmt.Println("The answer to task#2 is:", minute * toNum(guard))
+	fmt.Println("The answer to task#2 is:", minute*toNum(guard))
 
 }
-
